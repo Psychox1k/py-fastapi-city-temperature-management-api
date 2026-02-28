@@ -61,7 +61,8 @@ async def read_temperatures(
         city_id: int | None = None
 ):
     if city_id is not None:
-        db_city = await crud.get_city_by_id(db=db, city_id=city_id)
+        await crud.get_city_by_id(db=db, city_id=city_id)
+        return await crud.get_temperatures_by_city(db=db, city_id=city_id)
     return await crud.get_all_temperatures(db=db)
 
 
