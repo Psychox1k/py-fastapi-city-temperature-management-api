@@ -1,3 +1,5 @@
+import asyncio
+
 import httpx
 from fastapi import HTTPException
 
@@ -108,16 +110,25 @@ async def update_all_temperatures(
 ) -> list[models.DBTemperature]:
     cities = await get_all_cities(db=db)
 
+    #
+    # for city in cities:
+    #
+    # await db.commit()
+
+    tasks = [fetch_temperature_for_city(city.name) for city in cities]
+    temp_results = await asyncio.gather(*tasks)
+
     created_temperatures = []
-    for city in cities:
-        temp_for_city = await fetch_temperature_for_city(city.name)
-        db_temp = models.DBTemperature(city_id=city.id, temperature=temp_for_city)
-        db.add(db_temp )
+
+    for city, temp_value in zip(cities, temp_results):
+        db_temp = models.DBTemperature(city_id=city.id, temperature=temp_value)
+        db.add(db_temp)
         created_temperatures.append(db_temp)
+
     await db.commit()
 
-    for temp in created_temperatures:
-        await db.refresh(temp)
+    for db_temp in created_temperatures:
+        await db.refresh(db_temp)
 
     return created_temperatures
 

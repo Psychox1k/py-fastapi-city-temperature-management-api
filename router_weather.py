@@ -28,7 +28,7 @@ async def update_single_city(
 async def delete_city(
         db: Annotated[AsyncSession, Depends(get_db)],
         city_id: int
-):
+) -> dict:
     return await crud.delete_city(db=db, city_id=city_id)
 
 
@@ -62,14 +62,9 @@ async def read_temperatures(
 ):
     if city_id is not None:
         db_city = await crud.get_city_by_id(db=db, city_id=city_id)
-        if not db_city:
-            raise HTTPException(status_code=404, detail="City wasn't found")
-
-        return await crud.get_temperatures_by_city(db=db, city_id=city_id)
-
     return await crud.get_all_temperatures(db=db)
 
 
-@router.post("/temperature/update", response_model=list[schemas.Temperature])
+@router.post("/temperatures/update", response_model=list[schemas.Temperature])
 async def update_temperature(db: Annotated[AsyncSession, Depends(get_db)]):
     return await crud.update_all_temperatures(db=db)

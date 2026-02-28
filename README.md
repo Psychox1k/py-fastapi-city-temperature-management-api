@@ -72,6 +72,6 @@ Interactive API Documentation (Swagger): http://127.0.0.1:8000/docs
 
 ## 📝 Usage Tips
 
-Location Format: For best results with XWeather, use the City,CountryCode format when adding cities (e.g., London,uk or Paris,fr).
+* Location Format: For best results with XWeather, use the City,CountryCode format when adding cities (e.g., London,uk or Paris,fr).
 
-Optional Filtering: The /temperatures/ endpoint supports an optional city_id query parameter to filter history for a specific location.
+* Optional Filtering: The /temperatures/ endpoint supports an optional city_id query parameter to filter history for a specific location.

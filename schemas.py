@@ -19,7 +19,7 @@ class TemperatureBase(BaseModel):
     temperature: float
 
 class TemperatureCreate(TemperatureBase):
-    city_id: float
+    city_id: int
 
 class Temperature(TemperatureBase):
     model_config = ConfigDict(from_attributes=True)
